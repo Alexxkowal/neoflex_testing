@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator</title>
+</head>
+<body>
+<form th:action="@{/calculate}" th:method="POST" th:object="${inputData}">
+    <label for="avgSalary">Средняя зарплата</label>
+    <input type="number" th:field="*{avgSalary}" id="avgSalary">
+    <span th:if="${#fields.hasErrors('avgSalary')}" th:errors="*{avgSalary}" style="color:red"></span>
+    </br>
+
+    <label for="vacationDaysCount">Количество дней</label>
+    <input type="number" th:field="*{vacationDaysCount}" id="vacationDaysCount">
+    <span th:if="${#fields.hasErrors('vacationDaysCount')}" th:errors="*{vacationDaysCount}" style="color:red"></span>
+    </br>
+    <label for="startDate">Дата начала отпуска</label>
+    <input type="date" id="startDate" name="startDate" min="2026-01-01">
+    <label for="finishDate">Дата окончания отпуска</label>
+    <input type="date" id="finishDate" name="finishDate" min="2026-01-01">
+    <span th:if="${#fields.hasErrors('startDate')}" th:errors="*{startDate}" style="color:red"></span>
+    </br>
+    <input type="submit" value="Посчитать">
+</form>
+<div th:if="${result != null}">
+    <p th:text="${result}">result</p>
+</div>
+</body>
+</html>
