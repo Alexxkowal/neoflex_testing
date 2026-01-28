@@ -7,10 +7,10 @@ import java.time.LocalDate;
 
 @Service
 public class VacationPayCalculatorServiceImpl implements VacationPayCalculatorService{
-    private final CountWorkDaysServiceImpl countWorkDaysService;
+    private final CountWorkDaysService countWorkDaysService;
 
     @Autowired
-    public VacationPayCalculatorServiceImpl(CountWorkDaysServiceImpl countWorkDaysService) {
+    public VacationPayCalculatorServiceImpl(CountWorkDaysService countWorkDaysService) {
         this.countWorkDaysService = countWorkDaysService;
     }
 

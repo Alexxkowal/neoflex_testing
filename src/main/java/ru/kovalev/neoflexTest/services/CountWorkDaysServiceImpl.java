@@ -1,10 +1,6 @@
 package ru.kovalev.neoflexTest.services;
 
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,29 +8,15 @@ import java.util.Set;
 
 @Service
 public class CountWorkDaysServiceImpl implements CountWorkDaysService {
-    private final Set<LocalDate> holidays = new HashSet<>();
+    private final HolidayProvider holidayProvider;
 
-    @PostConstruct
-    public void init() {
-        try (InputStream is = getClass().getResourceAsStream("/holidays.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.trim().isEmpty()) {
-                    try {
-                        holidays.add(LocalDate.parse(line.trim()));
-                    } catch (Exception e) {
-                        System.err.println("Пропущена некорректная дата: " + line);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Ошибка загрузки праздников: " + e.getMessage());
-        }
+    public CountWorkDaysServiceImpl(HolidayProvider holidayProvider) {
+        this.holidayProvider = holidayProvider;
     }
+
     @Override
     public int countWorkDays(LocalDate start, LocalDate finish) {
+        Set<LocalDate> holidays = holidayProvider.loadHolidays();
         int count = 0;
         LocalDate current = start;
 
